@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+  <configuration>
+  
+  	<settings>
+  		<setting name="mapUnderscoreToCamelCase" value="true"/>
+  		<setting name="jdbcTypeForNull" value="NULL"/>
+  	</settings>
+  	  	
+  	<typeAliases>
+  		<typeAlias type="java.lang.String" alias="str" />
+		<typeAlias type="java.lang.Integer" alias="int" />
+		
+		<typeAlias type="kr.or.ddit.dto.MenuVO"  alias="menu"/>
+		<typeAlias type="kr.or.ddit.dto.AttachVO"  alias="attach"/>
+		<typeAlias type="kr.or.ddit.dto.MemberVO"  alias="member"/>
+		<typeAlias type="kr.or.ddit.dto.EmpstatsVO"  alias="empstats"/>
+		<typeAlias type="kr.or.ddit.dto.OpenRecVO" alias="openRec"/>
+		<typeAlias type="kr.or.ddit.dto.RecruitVO" alias="recruit"/>
+		<typeAlias type="kr.or.ddit.dto.SalaryVO" alias="salary"/>
+		<typeAlias type="kr.or.ddit.dto.BookmarkVO" alias="bookmark"/>
+		<typeAlias type="kr.or.ddit.dto.PublicWorkVO" alias="publicWork"/>
+		<typeAlias type="kr.or.ddit.dto.SupportVO" alias="support"/>
+		<typeAlias type="kr.or.ddit.dto.EducationVO" alias="education"/>
+		<typeAlias type="kr.or.ddit.dto.CareerVO" alias="career"/>
+		<typeAlias type="kr.or.ddit.dto.CertificateVO" alias="certificate"/>
+		<typeAlias type="kr.or.ddit.dto.CorporationVO" alias="corporation"/>
+		<typeAlias type="kr.or.ddit.dto.NewsVO" alias="news"/>
+		<typeAlias type="kr.or.ddit.dto.ContestVO" alias="contest"/>
+		<typeAlias type="kr.or.ddit.dto.MentoringVO" alias="mentoring"/>
+		<typeAlias type="kr.or.ddit.dto.ActivityVO" alias="activity"/>
+  		<typeAlias type="kr.or.ddit.dto.ApplicantsVO" alias="applicants"/>
+  		<typeAlias type="kr.or.ddit.dto.FaqVO" alias="faq"/>
+  		<typeAlias type="kr.or.ddit.dto.SupplyRecVO" alias="supplyRec"/>
+  	</typeAliases>
+    
+	
+  </configuration>
+  
+  
+  
+  
+  
+  
+  

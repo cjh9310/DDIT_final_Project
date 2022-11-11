@@ -1,0 +1,69 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Support-Mapper">
+
+	<select id="selectSupportList" resultType="support">
+		select
+		*
+		from
+		support
+		where sup_No is not null
+		order by sup_Date desc
+	</select>
+	
+	<select id="selectSupportListCount" resultType="int">
+		select
+		count(*)
+		from
+		support
+		where sup_No is not null
+		order by sup_Date desc
+	</select>
+	
+	<select id="selectSupportBySupNo" resultType="support">
+		select
+		*
+		from
+		support
+		where sup_No = #{supNo}
+	</select>
+	
+	<insert id="insertSupport" parameterType="support">
+		insert
+		into
+		support(sup_No, ind_Id, sup_Type, sup_Title, sup_Content, sup_Pdate ,sup_Date)
+		values
+		(#{supNo}, #{indId}, #{supType}, #{supTitle,  jdbcType = VARCHAR}, #{supContent,  jdbcType = VARCHAR}, #{supPdate,  jdbcType = VARCHAR}, sysdate)
+	</insert>
+	
+	<update id="updateSupport" parameterType="support">
+		update
+		support
+		set
+		sup_Type=#{supType}, sup_Title=#{supTitle}, sup_Content=#{supContent}, sup_Pdate=#{supPdate}, sup_Date=sysdate
+		where sup_No=#{supNo}
+	</update>
+	
+	<update id="updateSupportCounselor" parameterType="support">
+		update
+		support
+		set
+		sup_Process=#{supProcess}, sup_Edate=sysdate
+		where sup_No=#{supNo}
+	</update>
+	
+	<delete id="deleteSupport" parameterType="int">
+		delete
+		from
+		support
+		where sup_No=#{supNo}
+	</delete>
+	
+	<select id="selectSupportSeqNext" resultType="int">
+		select 
+		SUPPORT_SEQNO.nextval as sup_No 
+		from dual
+	</select>
+</mapper>

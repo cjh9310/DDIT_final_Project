@@ -1,0 +1,62 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Contest-Mapper">
+
+	<select id="selectContestList" resultType="contest">
+		select
+		* 
+		from
+		contest
+		where CON_NO is not null
+		order by CON_DATE desc
+	</select>
+	
+	<select id="selectContestListCount" resultType="int">
+		select
+		count(*)
+		from
+		contest
+		where CON_NO is not null
+		order by CON_DATE desc
+	</select>
+	
+	<select id="selectContestByConNo" resultType="contest">
+		select
+		*
+		from
+		contest
+		where CON_NO = #{conNo}
+	</select>
+	
+	<insert id="insertContest" parameterType="contest">
+		insert
+		into
+		contest(CON_NO, CO_ID, CON_CONTENT, CON_PICTURE, CON_FIELD, CON_AWARD, CON_SDATE, CON_EDATE, CON_TITLE, CON_DATE)
+		values
+		(#{conNo}, #{coId}, #{conContent}, #{conPicture, jdbcType = VARCHAR}, #{conField}, #{conAward}, #{conSdate}, #{conEdate}, #{conTitle}, sysdate)
+	</insert>
+	
+	<update id="updateContest" parameterType="contest">
+		update
+		contest
+		set
+		CON_CONTENT=#{conContent, jdbcType = VARCHAR}, CON_PICTURE=#{conPicture, jdbcType = VARCHAR}, CON_FIELD=#{conField, jdbcType = VARCHAR}, CON_AWARD=#{conAward, jdbcType = VARCHAR}, CON_SDATE=#{conSdate, jdbcType = VARCHAR}, CON_EDATE=#{conEdate, jdbcType = VARCHAR}, CON_TITLE=#{conTitle, jdbcType = VARCHAR}
+		where CON_NO=#{conNo}
+	</update>
+	
+	<delete id="deleteContest" parameterType="int">
+		delete
+		from
+		contest
+		where CON_NO = #{conNo}
+	</delete>
+	
+	<select id="selectContestSeqNext" resultType="int">
+		select 
+		CONTEST_SEQ.nextval as CON_NO 
+		from dual
+	</select>
+
+</mapper>

@@ -1,0 +1,17 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="Applicants-Mapper">
+	<select id="appliedPersonList" parameterType="str" resultType="applicants">
+		select i.IND_ID, i.IND_BIR, i.IND_GENDER, i.IND_SCORE, i.IND_OPEN, i.IND_ADDR, i.IND_FEDU, i.IND_WISHSEC, i.IND_WISHSAL, c.CRR_NO, c.CRR_SECTOR, c.CRR_CORNAME, c.CRR_JOB, c.CRR_POSITION, c.CRR_SDATE, c.CRR_EDATE, c.CRR_SAL, c.CRR_ANNUAL, c.CRR_STATUS, e.EDU_NO, e.EDU_NAME, e.EDU_DEP, e.EDU_MAJOR, e.EDU_SDATE, e.EDU_EDATE, e.EDU_STATUS, e.EDU_SCORE, t.CER_NO, t.CER_NAME, t.CER_SDATE, t.CER_EDATE, t.CER_HOST
+		from ind_member i
+		FULL  outer join career c
+		on i.ind_id = c.ind_id
+		FULL  outer join education e
+		on i.ind_id = e.ind_id
+		FULL  outer join certificate t
+		on i.ind_id = t.ind_id
+		where i.ind_id = #{id}
+	</select>
+</mapper>

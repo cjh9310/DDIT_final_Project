@@ -1,0 +1,20 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Empstats-Mapper">
+
+	<select id="selectEmpStats" resultType="empstats">
+		select a.trend_period as "trendPeriod"
+     		, (select b.dis_name
+          		 from districts b
+         	    where b.dis_code = a.dis_code) as "disCode"
+     		, (select c.age_range
+           		 from age c
+         		where c.age_code = a.age_code) as "ageCode"
+     		, a.trend_cnt as "trendCnt"
+     		, a.trend_ratio as "trendRatio"
+  		from trend a
+	</select>
+	
+</mapper>

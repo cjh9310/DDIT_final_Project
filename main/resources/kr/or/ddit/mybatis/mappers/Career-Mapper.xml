@@ -1,0 +1,52 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Career-Mapper">
+
+	<select id="selectCareerListById" parameterType="str" resultType="career">
+		 select a.*,
+                 (select stat_name from status b
+                   where b.stat_no=a.crr_status
+                     and b.stat_col='CRR_STATUS') as "STR_STATUS"
+            from career a
+           where ind_id=#{id}
+           order by a.crr_edate
+	</select>
+	
+	<select id="selectCareerByCrrNo" parameterType="str" resultType="career">
+		 select a.*,
+       	        (select stat_name from status b
+                  where b.stat_no=a.crr_status
+                    and b.stat_col='CRR_STATUS') as "STR_STATUS"
+           from career a
+          where crr_no=#{crrNo}
+	</select>
+	
+	<update id="insertCareer" parameterType="career">
+		insert into career
+		(crr_no, ind_id, crr_sector, crr_corname, crr_job, crr_position, crr_sdate, crr_edate, crr_sal, crr_annual, crr_status) values
+		(career_SEQ.nextval, #{indId}, #{crrSector}, #{crrCorname}, #{crrJob}, #{crrPosition}, #{crrSdate}, #{crrEdate}, #{crrSal}, #{crrAnnual}, #{crrStatus})
+	</update>
+	
+	<update id="updateCareer" parameterType="career">
+		update career
+		   set
+		   crr_sector=#{crrSector},
+		   crr_corname=#{crrCorname},
+		   crr_job=#{crrJob},
+		   crr_position=#{crrPosition},
+		   crr_sdate=#{crrSdate},
+		   crr_edate=#{crrEdate},
+		   crr_sal=#{crrSal},
+		   crr_annual=#{crrAnnual},
+		   crr_status=#{crrStatus}
+		 where crr_no=#{crrNo}
+	</update>
+	
+	<delete id="deleteCareer" parameterType="str">
+		delete from career
+		 where crr_no=#{crrNo}
+	</delete>
+	
+</mapper>

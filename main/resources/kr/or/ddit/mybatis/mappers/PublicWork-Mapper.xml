@@ -1,0 +1,86 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PublicWork-Mapper">
+	<select id="searchPublicWorkList" resultType="publicWork">
+		select *
+		  from (
+		    select rownum as rnum,SearchPublicWorkResult.*
+		    from ( 
+		    		select * 
+					  from public_work
+					 where pub_no is not null
+					  		
+				order by pub_no desc
+		    )  SearchPublicWorkResult
+		    <![CDATA[
+		    where rownum <= #{endRow}
+		    ]]>
+		)
+		 <![CDATA[
+		where rnum >= #{startRow}		
+		]]>
+	</select>
+	
+	
+	<select id="selectSearchPublicWorkListCount" resultType="int">
+		select count(*)
+		  from public_work
+	  	 where pub_no is not null  			  	
+	  order by pub_sdate desc
+	</select>	
+	
+
+	<select id="selectAllPublicWorkList" resultType="publicWork" parameterType="str">
+		select *
+		  from public_work
+		 where ad_id=#{adId}
+		 order by pub_no desc
+	</select>
+
+	<select id="selectPublicWorkByPubNo" resultType="publicWork">	
+		select * 
+		  from public_work
+		 where pub_no=#{pubNo}
+	</select>
+	
+	
+	<select id="selectPublicWorkSequenceNextValue" resultType="int">
+		select publicWork_seq.nextVal
+		  from dual
+	</select>
+	
+	
+	<update id="increaseViewCount" parameterType="int">
+		update public_work
+	  	   set viewcnt=viewcnt+1
+		 where pub_no=#{pubNo}
+	</update>
+	
+	
+	<insert id="insertPublicWork" parameterType="publicWork">
+		<selectKey resultType="int" keyProperty="pubNo" order="BEFORE">
+			select max(pub_no)+1 from public_work
+		</selectKey>
+		insert into 
+		public_work
+		values(#{pubNo},#{adId},#{pubTitle},#{pubContent,jdbcType=VARCHAR},#{pubHost},TO_CHAR(sysdate,'YYYY-MM-DD'),#{pubEdate},#{viewCnt})
+	</insert>	
+	
+		
+	<update id="updatePublicWork" parameterType="publicWork">
+		update public_work 
+		   set 
+		   pub_title=#{pubTitle},pub_host=#{pubHost},pub_sdate=sysdate,pub_edate=#{pubEdate},pub_content=#{pubContent}		
+		 where pub_no=#{pubNo}
+	</update>
+	
+	
+	<update id="deleteNotice" parameterType="int" >
+		delete 
+		  from public_work 
+		 where pub_no=#{pubNo}		
+	</update>		
+	
+</mapper>

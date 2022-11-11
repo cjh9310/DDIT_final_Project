@@ -1,0 +1,152 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Salary-Mapper">
+	<sql id="search">	
+		<if test="searchType == 's'.toString()">
+			order by b.CO_SAL desc			
+		</if>
+		<if test="searchType == 'y'.toString()">
+		    where TRIM(replace(rec_yrsalesamt,'백만원',-,'')) != '-'
+   			order by TO_NUMBER(TRIM(replace(rec_yrsalesamt,' 백만원',''))) desc			
+		</if>
+		<if test="searchType == 'p'.toString()">
+			order by TO_NUMBER(replace(rec_personal,'','')) desc
+		</if>
+	</sql>
+			
+	
+	<select id="selectSalaryList" resultType="salary">
+select DISTINCT a.co_name, 
+                  replace(rec_personal,'명','') as rec_personal,
+                  replace(rec_yrsalesamt,'백만원') as rec_yrsalesamt,
+                  rec_indtpcdnm,
+                  rec_region,
+                  b.CO_SAL
+      from (select Distinct co_name,
+                            rec_personal,
+                            rec_yrsalesamt,
+                            rec_indtpcdnm,
+                            rec_region	 
+              from Recruit) a
+inner join (select rownum as sal_rank,
+                             co_name,
+                             CO_SAL
+                     from (select co_name, 
+                                  CASE WHEN TO_NUMBER(rec_maxsal)=0
+                                       THEN TO_NUMBER(rec_minsal)
+                                       ELSE (TO_NUMBER(rec_minsal)+TO_NUMBER(rec_maxsal))/2
+                                   END AS CO_SAL
+                             from recruit
+                            where rec_saltpnm like '%연봉%'
+                         order by co_sal desc)
+            ) b
+         on a.co_name = b.co_name
+		<include refid="search" />
+	</select>
+	
+	<select id="selectRegionList" resultType="salary">
+		select distinct rec_region
+  		  from recruit
+	</select>
+	
+	<select id="selectSalaryByRegion" resultType="salary">
+		select rownum as "SAL_RANK",
+		       co_name,
+		       "CO_SAL"
+		from (
+		    select distinct co_name,
+		    rec_region,
+		    CASE WHEN TO_NUMBER(rec_maxsal)=0 THEN 
+		    TO_NUMBER(rec_minsal)
+		    ELSE 
+		    (TO_NUMBER(rec_minsal)+TO_NUMBER(rec_maxsal))/2 END AS "CO_SAL"
+		    from  recruit
+		    where  rec_region = #{region}
+		    and  rec_saltpnm like '%연봉%'
+		    order by co_sal desc)
+		<![CDATA[where rownum <= 10]]>
+	</select> 
+	
+	<select id="selectSalaryListCount" resultType="int">
+		select
+			count(*)	 
+		from Recruit
+		where co_name is not null
+	</select>
+	
+ 	<select id="selectSalaryByCoSal" resultType="salary">
+     	select rownum as "SAL_RANK",
+     	       co_name,
+       	       "CO_SAL"
+          from (select co_name, 
+                       CASE WHEN TO_NUMBER(rec_maxsal)=0 THEN 
+                       TO_NUMBER(rec_minsal)
+                       ELSE 
+                       (TO_NUMBER(rec_minsal)+TO_NUMBER(rec_maxsal))/2 END AS "CO_SAL"
+     	          from recruit 
+     	         where rec_saltpnm like '%연봉%'
+                 order by co_sal desc)
+          <![CDATA[where rownum <= 10]]>
+	</select> 
+ 	<select id="selectSalaryByTypeSal" resultType="salary">
+     	select DISTINCT category recIndtpcdnm, 
+                round(AVG(avg_pay),-4) coSal
+  from (select case when rec_indtpcdnm like '%소프트웨어%'
+                    then 'IT개발'
+                    when rec_indtpcdnm like '%제조업%'
+                    then '제조업'
+                    when rec_indtpcdnm like '%서비스업%'
+                    then '서비스업'
+                    when rec_indtpcdnm like '%디자인%'
+                    then '디자인'
+                    when rec_indtpcdnm like '%연구%'
+                    then '연구'
+                    when rec_indtpcdnm like '%교육%'
+                    then '교육'
+                    when rec_indtpcdnm like '%상담%'
+                    then '상담'
+                    when rec_indtpcdnm like '%건설%'
+                    then '건설업'
+                    when rec_indtpcdnm like '%병원%'
+                    then '의료'
+                    when rec_indtpcdnm like '%도매%'
+                    then '도매업'
+                    when rec_indtpcdnm like '%소매%'
+                    then '소매업'
+                    else '기타' end as category,
+                    avg_pay
+        from(
+              select DISTINCT rec_indtpcdnm, round(AVG(co_sal),-4) avg_pay
+                from (select DISTINCT a.co_name, rec_personal, rec_yrsalesamt, rec_indtpcdnm, rec_region, b.CO_SAL
+                        from (select Distinct co_name,
+                                              rec_personal,
+                                              rec_yrsalesamt,
+                                              rec_indtpcdnm,
+                                              rec_region	 
+                                from Recruit
+                      ) a
+           inner join (select rownum as sal_rank,
+                              co_name,
+                              CO_SAL
+                         from (select co_name, 
+                                      CASE WHEN TO_NUMBER(rec_maxsal)=0
+                                           THEN TO_NUMBER(rec_minsal)
+                                           ELSE (TO_NUMBER(rec_minsal)+TO_NUMBER(rec_maxsal))/2
+                                       END AS CO_SAL
+                                 from recruit
+                                where rec_saltpnm like '%연봉%'
+                             order by co_sal desc)
+                       ) b
+           on a.co_name = b.co_name
+        ) viwe_table
+        group by rec_indtpcdnm
+        order by 2 desc)
+        )
+        group by category
+		order by 2 desc
+	</select> 
+
+	
+</mapper>

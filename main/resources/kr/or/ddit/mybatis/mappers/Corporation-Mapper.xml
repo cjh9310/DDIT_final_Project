@@ -1,0 +1,12 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Corporation-Mapper">
+
+	<select id="selectLogoList" parameterType="str" resultType="corporation">
+		select co_name
+  		  from corporation
+	</select>
+	
+</mapper>

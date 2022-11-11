@@ -1,0 +1,66 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="News-Mapper">
+
+	<select id="selectNewsList" resultType="news">
+		select * from income_news
+		where news_no is not null
+		order by news_sdate desc
+	</select>
+	
+	<select id="selectNewsListCount" resultType="int">
+        select
+		count(*)
+		from
+		income_news
+		where news_no is not null
+		order by news_sdate desc
+	</select>
+	
+	<select id="selectNewsByNewsNo" resultType="news">
+        select
+		*
+		from
+		income_news
+		where news_no = #{newsNo}
+	</select>
+	
+	<update id="insertNews" parameterType="news">
+		insert into 
+		income_news
+		(news_no,ad_id,news_title,news_content,news_sdate,news_cnt,news_oneContent,news_picture)
+		values
+		(#{newsNo}, #{adId}, #{newsTitle} ,#{newsContent}, TO_CHAR(sysdate, 'YYYY-MM-DD'), #{newsCnt}, #{newsOneContent}, #{newsPicture} )
+	</update>
+	
+	<update id="updateNews" parameterType="news">
+	    update
+		income_news
+		set
+		news_no=#{newsNo},news_picture=#{newsPicture} news_Content=#{newsContent}, news_sDate=sysdate, news_OneContent=#{newsOneContent}
+		where news_no = #{newsNo}
+	</update>
+	
+	<update id="deleteNews" parameterType="int">
+		delete
+		from
+		income_news
+		where news_no=#{newsNo}
+	</update>
+	
+	<select id="selectNewsSeqNext" resultType="int">
+	     select 
+		 news_SEQ.nextval as news_no 
+		 from dual
+	</select>
+	
+	<update id="increaseNewsCnt" parameterType="int">
+		update 
+		income_news 
+		set 
+		news_cnt=news_cnt+1 
+		where news_no=#{newsNo}
+	</update>
+</mapper>

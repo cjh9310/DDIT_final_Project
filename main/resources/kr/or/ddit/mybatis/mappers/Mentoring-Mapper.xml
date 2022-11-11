@@ -1,0 +1,76 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Mentoring-Mapper">
+	<select id="selectMentoringList" resultType="mentoring">
+		select
+		*
+		from
+		mentoring
+		where men_no is not null
+		order by men_date desc
+	</select>
+	
+	<select id="selectMentoringListCount" resultType="int">
+		select
+		count(*)
+		from
+		mentoring
+		where men_no is not null
+		order by men_date desc
+	</select>
+	
+	<select id="selectMentoringByMenNo" resultType="mentoring">
+		select
+		*
+		from
+		mentoring
+		where men_no = #{menNo}
+	</select>
+	
+	<insert id="insertAllMentoring" parameterType="mentoring">
+		insert
+		into
+		mentoring(MEN_NO, CO_ID, MEN_TITLE, MEN_CONTENT, MEN_SDATE, MEN_SDATE, NUM_PEOPLE, MEN_PROGRESS, MEN_DATE)
+		values
+		(#{menNo}, #{coId}, ${menTitle}, #{menContent}, #{menSdate}, #{menEdate}, #{numPeople}, #{menProgress}, sysdate)
+	</insert>
+	
+	<insert id="insertMentoring" parameterType="mentoring">
+		insert
+		into
+		mentoring(MEN_NO, CO_ID, MEN_TITLE, MEN_CONTENT, MEN_SDATE, MEN_EDATE, NUM_PEOPLE, MEN_DATE)
+		values
+		(#{menNo}, #{coId}, ${menTitle}, #{menContent}, #{menSdate}, #{menEdate}, #{numPeople}, sysdate)
+	</insert>
+	
+	<update id="updateMentoring"  parameterType="mentoring">
+		update
+		mentoring
+		set
+		MEN_TITLE=#{menTitle}, MEN_CONTENT=#{menContent}, MEN_SDATE=#{menSdate}, MEN_EDATE=#{menEdate}, NUM_PEOPLE=#{numPeople}
+		where men_no= #{menNo}
+	</update>
+	
+	<update id="updateMentoringComem" parameterType="mentoring">
+		update
+		mentoring
+		set
+		MEN_PROGRESS=#{menProgress}
+		where men_no=#{menNo}
+		</update>
+		
+	<delete id="deleteMentoring" parameterType="int">
+		delete
+		from
+		mentoring
+		where men_no = #{menNo}
+	</delete>
+	
+	<select id="selectMentoringSeqNext" resultType="int">
+		select
+		MENTORING_SEQ.nextval as men_no
+		from dual
+	</select>
+</mapper>

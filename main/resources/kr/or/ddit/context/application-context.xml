@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- summernote Image Path -->
+	<bean id="imgPath" class="java.lang.String">
+		<constructor-arg value="${summernote.img}" />
+	</bean>
+
+	<!-- member.picture -->
+	<bean id="picturePath" class="java.lang.String">
+		<constructor-arg value="${member.picture.upload}" />
+	</bean>
+
+	<!-- Repository -->
+	<bean id="menuDAO" class="kr.or.ddit.dao.MenuDAOImpl"
+		p:session-ref="sqlSession" />
+	<bean id="attachDAO" class="kr.or.ddit.dao.AttachDAOImpl"
+		p:session-ref="sqlSession" />
+	<bean id="memberDAO" class="kr.or.ddit.dao.MemberDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="empstatsDAO" class="kr.or.ddit.dao.EmpstatsDAOImpl"
+		p:session-ref="sqlSession" />
+	<bean id="openRecDAO" class="kr.or.ddit.dao.OpenRecDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="recruitDAO" class="kr.or.ddit.dao.RecruitDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="salaryDAO" class="kr.or.ddit.dao.SalaryDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="bookmarkDAO" class="kr.or.ddit.dao.BookmarkDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="educationDAO" class="kr.or.ddit.dao.EducationDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="careerDAO" class="kr.or.ddit.dao.CareerDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="certificateDAO" class="kr.or.ddit.dao.CertificateDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="publicWorkDAO" class="kr.or.ddit.dao.PublicWorkDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="supportDAO" class="kr.or.ddit.dao.SupportDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="corporationDAO" class="kr.or.ddit.dao.CorporationDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="newsDAO" class="kr.or.ddit.dao.NewsDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="contestDAO" class="kr.or.ddit.dao.ContestDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="faqDAO" class="kr.or.ddit.dao.FaqDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="supplyRecDAO" class="kr.or.ddit.dao.SupplyRecDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="appliedPersonDAO" class="kr.or.ddit.dao.AppliedPersonDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="mentoringDAO" class="kr.or.ddit.dao.MentoringDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+
+	<!-- Service -->
+	<bean id="menuService" class="kr.or.ddit.service.MenuServiceImpl"
+		p:menuDAO-ref="menuDAO" />
+	<bean id="empstatsService"
+		class="kr.or.ddit.service.EmpstatsServiceImpl"
+		p:empstatsDAO-ref="empstatsDAO" />
+	<bean id="memberService"
+		class="kr.or.ddit.service.MemberServiceImpl"
+		p:memberDAO-ref="memberDAO" />
+	<bean id="openRecService"
+		class="kr.or.ddit.service.OpenRecServiceImpl"
+		p:openRecDAO-ref="openRecDAO" />
+	<bean id="recruitService"
+		class="kr.or.ddit.service.RecruitServiceImpl"
+		p:recruitDAO-ref="recruitDAO" />
+	<bean id="salaryService"
+		class="kr.or.ddit.service.SalaryServiceImpl"
+		p:salaryDAO-ref="salaryDAO" />
+	<bean id="bookmarkService"
+		class="kr.or.ddit.service.BookmarkServiceImpl"
+		p:bookmarkDAO-ref="bookmarkDAO" />
+	<bean id="educationService"
+		class="kr.or.ddit.service.EducationServiceImpl"
+		p:educationDAO-ref="educationDAO" />
+	<bean id="careerService"
+		class="kr.or.ddit.service.CareerServiceImpl"
+		p:careerDAO-ref="careerDAO" />
+	<bean id="certificateService"
+		class="kr.or.ddit.service.CertificateServiceImpl"
+		p:certificateDAO-ref="certificateDAO" />
+	<bean id="publicWorkService"
+		class="kr.or.ddit.service.PublicWorkServiceImpl"
+		p:publicWorkDAO-ref="publicWorkDAO" />
+	<bean id="supportService"
+		class="kr.or.ddit.service.SupportServiceImpl"
+		p:supportDAO-ref="supportDAO"/>
+	<bean id="CorporationService"
+		class="kr.or.ddit.service.CorporationServiceImpl"
+		p:corporationDAO-ref="corporationDAO"/>
+	<bean id="newsService"
+		class="kr.or.ddit.service.NewsServiceImpl"
+		p:newsDAO-ref="newsDAO" />
+	<bean id="contestService"
+		class="kr.or.ddit.service.ContestServiceImpl"
+		p:contestDAO-ref="contestDAO" />
+	<bean id="faqService"
+		class="kr.or.ddit.service.FaqServiceImpl"
+		p:faqDAO-ref="faqDAO" />
+	<bean id="supplyRecService"
+		class="kr.or.ddit.service.SupplyRecServiceImpl"
+		p:supplyRecDAO-ref="supplyRecDAO" />
+	<bean id="applicantsService"
+		class="kr.or.ddit.service.ApplicantsServiceImpl"
+		p:appliedPersonDAO-ref="appliedPersonDAO"/>
+	<bean id="mentoringService"
+		class="kr.or.ddit.service.MentoringServiceImpl"
+		p:mentoringDAO-ref="mentoringDAO" />
+</beans>

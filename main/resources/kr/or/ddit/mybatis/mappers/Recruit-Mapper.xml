@@ -1,0 +1,152 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Recruit-Mapper">
+	<sql id="search">
+		<!-- <if test="keyword != null">
+			and CO_NAME like '%'||#{keyword}||'%'	
+		</if>  -->
+		
+		<if test="searchBtn1 != null and searchBtn1 != 'undefined'">
+			<if test="searchBtn1 == '서비스업'">
+				and REC_JOBSNM like '%'||'서비스'||'%' 
+			</if> 
+			<if test="searchBtn1 == '제조·화학'">
+				and REC_JOBSNM like '%'||'제조'||'%'
+				or REC_JOBSNM like '%'||'화학'||'%'
+			</if>  
+			<if test="searchBtn1 == 'IT계열'">
+				and REC_JOBSNM like '%'||'프로그래'||'%'
+				or REC_JOBSNM like '%'||'모바일'||'%'
+				or REC_JOBSNM like '%'||'IT'||'%'
+				or REC_JOBSNM like '%'||'개발자'||'%'
+			</if>  
+			
+			
+		</if> 
+		<if test="searchBtn2 != null and searchBtn2 != 'undefined'">
+			and REC_REGION like '%'||#{searchBtn2}||'%'
+		</if> 
+		<if test="searchBtn3 != null and searchBtn3 != 'undefined'">
+			and REC_ENTERTPNM like '%'||#{searchBtn3}||'%' 
+		</if> 
+		<if test="searchBtn4 != null and searchBtn4 != 'undefined'">
+			and REC_MINEDUBG like '%'||#{searchBtn4}||'%'
+		</if> 
+		<if test="searchBtn5 != null and searchBtn5 != 'undefined'">
+			and REC_BUSISIZE like '%'||#{searchBtn5}||'%'
+		</if> 
+		
+		<if test="searchType == 's'.toString()">
+			order by REC_REGDT desc
+		</if>
+		<if test="searchType == 'c'.toString()">
+			order by TO_CHAR(replace(REC_RECEIPTCLOSEDT,' 채용시까지',''))
+		</if> 
+		<if test="searchType == 'm'.toString()">
+			order by REC_MINSAL desc
+		</if>
+	</sql>
+
+	<select id="selectRecruitList" resultType="recruit">
+		select
+		*
+		from
+		recruit
+		where REC_WANTEDNO is not null 
+		<include refid="search" />
+	</select>
+	
+	<select id="selectRecruitListByScroll" parameterType="hashMap" resultType="recruit">
+		select *
+          from (select rownum as idx, a.* from (select recruit.* from recruit order by rec_regdt desc) a)
+         where idx between #{startNum} and #{endNum}
+	</select>
+
+	<select id="selectRecruitListCount" resultType="int">
+		select
+		count(*)
+		from
+		recruit
+		where REC_WANTEDNO is not null
+		order by REC_REGDT desc
+	</select>
+
+	<select id="selectRecruitByRecWantedno" resultType="recruit">
+		select *
+		from
+		recruit
+		where REC_WANTEDNO=#{REC_WANTEDNO}
+	</select>
+
+	<update id="insertRecruit" parameterType="recruit">
+		insert into recruit
+		(REC_WANTEDTITLE,REC_WANTEDNO,REC_REGDT,CO_NAME,REC_MINSAL,REC_MINEDUBG,REC_INDTPCDNM,
+		REC_JOBSNM,REC_WORKDAYWORKHRCONT,REC_FOURINS,REC_ENTERTPNM,REC_REGION,REC_RECEIPTCLOSEDT,REC_JOBCONT)
+		values (
+		#{recWantedtitle},#{recWantedno},sysdate,#{coName},#{recMinsal},#{recMinedubg},#{recIndtpcdnm},#{recJobsnm},
+		#{recWorkdayworkhrcont},#{recFourins},#{recEntertpnm},#{recRegion},#{recReceiptclosedt},#{recJobcont})
+	</update>
+	
+	<update id="updateRecruit" parameterType="recruit">
+		update into recruit
+		recruit
+		set
+		REC_REGDT=sysdate,CO_NAME=#{CO_NAME},REC_MINSAL=#{REC_MINSAL},REC_MAXSAL=#{REC_MAXSAL},REC_MINEDUBG=#{REC_MINEDUBG}
+		,REC_PERSONAL=#{REC_PERSONAL},REC_CAPITALAMT=#{REC_CAPITALAMT},REC_YRSALESAMT=#{REC_YRSALESAMT},REC_INDTPCDNM=#{REC_INDTPCDNM},REC_HOMEPG=#{REC_HOMEPG}
+		,REC_BUSISIZE=#{REC_BUSISIZE},REC_JOBSNM=#{REC_JOBSNM},REC_WANTEDTITLE=#{REC_WANTEDTITLE},REC_JOBCONT=#{REC_JOBCONT},REC_FOURINS=#{REC_FOURINS}
+		,REC_REGION=#{REC_REGION},SEC_CODE=#{SEC_CODE}
+		where
+		REC_WANTEDNO=#{REC_WANTEDNO}
+	</update>
+
+	<update id="deleteRecruit" parameterType="string">
+		delete
+		from recruit
+		where REC_WANTEDNO=#{REC_WANTEDNO}
+	</update>
+
+	<select id="selectRecruitSequenceNextValue" resultType="string">
+		select
+		'K18005221' || TO_CHAR(recruit_seq.nextval) as REC_WANTEDNO from dual
+	</select>
+
+	<select id="selectRecruitListForMain" resultType="recruit">
+		select CO_NAME,
+			   REC_JOBSNM,
+			   REC_WANTEDTITLE,
+			   REC_REGION,
+			   REC_ENTERTPNM,
+			   REC_MINEDUBG,
+			   REC_REGDT
+	      from recruit
+	     order by REC_REGDT desc
+	</select>
+
+	<select id="selectSupplyRecruitListById" parameterType="str"
+		resultType="recruit">
+		select rownum,
+		a.sup_no,
+		a.ind_id,
+		a.sup_status,
+		a.rec_wantedno,
+		b.co_name,
+		b.rec_indtpcdnm,
+		b.rec_wantedtitle,
+		b.rec_regdt,
+		b.rec_region
+		from supply_rec a, recruit b
+		where a.rec_wantedno = b.rec_wantedno
+		and a.rec_wantedno is not null
+		and ind_id=#{id}
+	</select>
+
+	<select id="selectRecruitByConm" parameterType="str"
+		resultType="recruit">
+		select *
+		from recruit
+		where co_name = #{co_name}
+	</select>
+
+</mapper>

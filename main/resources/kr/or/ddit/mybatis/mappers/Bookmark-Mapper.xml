@@ -1,0 +1,21 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Bookmark-Mapper">
+
+	<select id="selectBookmarkById" parameterType="str" resultType="bookmark">
+		 select a.book_no as "bookNo",
+        		a.rec_wantedno as "recWantedno",
+        		a.co_name as "coName",
+        		a.book_type as "bookType",
+        		c.co_name as "recCoName",
+        		c.rec_wantedtitle as "recWantedtitle",
+        		b.co_logo as "coLogo"
+   		   from bookmark a, corporation b, recruit c
+  		  where a.co_name = b.co_name(+)
+    		and a.rec_wantedno = c.rec_wantedno(+)
+    		and a.ind_id = #{id}
+	</select>
+	
+</mapper>

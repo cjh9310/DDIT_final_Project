@@ -1,0 +1,12 @@
+.area_wrap > .txt{float:left;font-family: 'Spoqa Han Sans Neo',sans-serif;font-size:.9rem;letter-spacing: -0.54px;color:#fff;}
+.area_wrap path{cursor:pointer;-webkit-transition:all .3s;transition:all .3s;}
+.area_wrap path:hover{fill:#2196F3;}
+.area_map{font-family: 'Spoqa Han Sans Neo',sans-serif; text-align: center;}
+.area_map > svg{position:relative; height: 400px;}
+
+
+.main_area_wrap > .txt{float:left;font-family: 'Spoqa Han Sans Neo',sans-serif;font-size:.9rem;letter-spacing: -0.54px;color:#fff;}
+.main_area_wrap path{cursor:pointer;-webkit-transition:all .3s;transition:all .3s;}
+.main_area_wrap path:hover{fill:#2196F3;}
+.main_area_map{font-family: 'Spoqa Han Sans Neo',sans-serif; text-align: center;}
+.main_area_map > svg{position:relative; height:280px; float: left;}

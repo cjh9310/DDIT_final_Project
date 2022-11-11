@@ -1,0 +1,76 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="OpenRec-Mapper">
+	<sql id="search">
+		<if test="searchType == 's'.toString()">
+			order by open_sdate desc
+		</if>
+		<if test="searchType == 'c'.toString()">
+			order by open_edate desc
+		</if>
+		<if test="searchType == null">
+			order by open_sdate asc
+		</if>
+	</sql>
+	
+	<select id = "selectOpenRecListForMain" resultType="openRec">
+		select open_sdate,
+       		   open_conm,
+       		   open_logo,
+       		   open_title,
+       		   open_carnm,
+       		   open_edate,
+       		   open_region,
+       		   open_edunm
+  		  from open_rec
+ 		 order by open_sdate desc
+	</select>
+	
+	<select id = "selectOpenRecList" resultType="openRec">
+		select *
+		from open_rec
+	</select>
+	
+	<select id = "selectSearchOpenRecList" resultType="openRec">
+		select *
+		from open_rec
+		where OPEN_SEQNO is not null
+		<include refid="search"/>
+	</select>
+	
+	<select id="selectOpenRecListCount" resultType = "int">
+		select count(*)
+		from open_rec
+		where open_seqno is not null
+	</select>
+	
+	<select id="selectOpenRecListByConm" parameterType="str" resultType="openRec">
+		select *
+		from open_rec
+		where open_conm = #{open_conm}
+	</select>
+	
+	<select id="selectOpenRecListbyNo" parameterType="int" resultType="openRec">
+		select * 
+		from open_rec
+		where open_seqno = #{open_seqno}
+	</select>
+	
+	<select id="selectOpenApplicants" parameterType="int" resultType="str">
+		select a.ind_id
+		from supply_rec a
+		where a.open_seqno = #{open_seqno}
+	</select>
+	
+	<insert id="insertOpenRec" parameterType="openRec">
+		<selectKey resultType="int" keyProperty="openSeqNo" order="BEFORE">
+			select max(open_seqno)+1 from open_Rec;
+		</selectKey>
+		insert into openRec values(#{openSeqNo}, #{openCOCL}, #{openType}, #{openCar}, #{oepnJobscd},
+		                           #{openTitle}, #{openSdate}, #{openEdate}, #{openAcptpsn}, #{openContent},
+		                           #{openRegion}, #{openCarnm}, #{openEdunm}, #{openCnt}, #{openConm},
+		                           #{openHomepg}, #{openLogo})
+	</insert>
+</mapper>

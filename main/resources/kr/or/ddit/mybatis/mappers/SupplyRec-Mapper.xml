@@ -1,0 +1,11 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="SupplyRec-Mapper">
+	<select id="selectSupplyRecByNo" parameterType="int" resultType="supplyRec">
+		select id, name, email, picture, sup_no, rec_wantedno, open_seqno, sup_date, ind_bir, ind_gender, ind_score, ind_open, ind_addr, ind_fedu, ind_wishsec, ind_wishsal
+		from member m, supply_rec s, ind_member i 
+		where m.id = s.ind_id and s.ind_id = i.ind_id and  s.open_seqno = #{open_seqno}
+	</select>
+</mapper>

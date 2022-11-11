@@ -1,0 +1,41 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Certificate-Mapper">
+
+	<select id="selectCertificateListById" parameterType="str" resultType="certificate">
+		 select *
+  		   from certificate
+          where ind_id=#{id}
+          order by cer_sdate
+	</select>
+	
+	<select id="selectCertificateByCerNo" parameterType="str" resultType="certificate">
+		select *
+		  from certificate
+		 where cer_no=#{cerNo}
+	</select>
+	
+	<update id="insertCertificate" parameterType="certificate">
+		insert into certificate
+		(cer_no, ind_id, cer_name, cer_sdate, cer_edate, cer_host) values
+		(certificate_seq.nextval, #{indId}, #{cerName}, #{cerSdate}, #{cerEdate}, #{cerHost})
+	</update>
+	
+	<update id="updateCertificate" parameterType="certificate">
+		update certificate
+		   set
+		   cer_name=#{cerName},
+		   cer_sdate=#{cerSdate},
+		   cer_edate=#{cerEdate},
+		   cer_host=#{cerHost}
+		 where cer_no=#{cerNo}
+	</update>
+	
+	<delete id="deleteCertificate" parameterType="str">
+		delete from certificate
+		 where cer_no=#{cerNo}
+	</delete>
+	
+</mapper>

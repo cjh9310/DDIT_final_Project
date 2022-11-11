@@ -1,0 +1,50 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Education-Mapper">
+
+	<select id="selectEducationById" parameterType="str" resultType="education">
+		 select a.*,
+       	        (select stat_name from status b
+                  where b.stat_no=a.edu_status
+                    and b.stat_col='EDU_STATUS') as "STR_STATUS"
+           from education a
+          where ind_id=#{id}
+          order by a.edu_sdate
+	</select>
+	
+	<select id="selectEducationByEduNo" parameterType="str" resultType="education">
+		 select a.*,
+       	        (select stat_name from status b
+                  where b.stat_no=a.edu_status
+                    and b.stat_col='EDU_STATUS') as "STR_STATUS"
+           from education a
+          where edu_no=#{eduNo}
+	</select>
+	
+	<update id="insertEducation" parameterType="education">
+		insert into education
+		(EDU_NO, IND_ID, EDU_NAME, EDU_DEP, EDU_MAJOR, EDU_SDATE, EDU_EDATE, EDU_STATUS, EDU_SCORE) values
+		(EDUCATION_SEQ.nextval, #{indId}, #{eduName}, #{eduDep}, #{eduMajor}, #{eduSdate}, #{eduEdate}, #{eduStatus}, #{eduScore})
+	</update>
+	
+	<update id="updateEducation" parameterType="education">
+		update education
+		   set
+		   edu_name=#{eduName},
+		   edu_dep=#{eduDep},
+		   edu_major=#{eduMajor},
+		   edu_sdate=#{eduSdate},
+		   edu_edate=#{eduEdate},
+		   edu_status=#{eduStatus},
+		   edu_score=#{eduScore}
+		 where edu_no=#{eduNo}
+	</update>
+	
+	<delete id="deleteEducation" parameterType="str">
+		delete from education
+		 where edu_no=#{eduNo}
+	</delete>
+	
+</mapper>
